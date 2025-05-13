@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>شرکت پیمانکاری بازسازی - مدرن و خفن</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazir&display=swap');
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: 'Vazir', sans-serif;
+    background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+    color: #e0e0e0;
+    overflow-x: hidden;
+  }
+  a {
+    color: #00ffa8;
+    transition: color 0.3s ease;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #00ffcb;
+  }
+  header {
+    position: fixed;
+    width: 100%;
+    top: 0; left: 0;
+    background: rgba(18,18,18,0.85);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid #00ffa8;
+    z-index: 9999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 0 16px #00ffa8aa;
+  }
+  header h1 {
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    color: #00ffa8;
+    user-select: none;
+  }
+  nav {
+    display: flex;
+    gap: 2rem;
+  }
+  nav a {
+    font-weight: 600;
+    font-size: 1.1rem;
+    position: relative;
+    text-transform: uppercase;
+    padding: 0.3rem 0;
+    user-select: none;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: #00ffa8;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.3s ease;
+  }
+  nav a:hover::after,
+  nav a.active::after {
+    width: 100%;
+  }
+  main {
+    margin-top: 80px;
+  }
+  section {
+    padding: 4rem 10vw;
+  }
+  #home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at center, #00ffa8 5%, #121212 80%);
+  }
+  #home h2 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+    color: #121212;
+    text-shadow: 0 0 8px #00ffa8dd;
+  }
+  #home p {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    max-width: 650px;
+    font-weight: 600;
+    color: #121212cc;
+    user-select: none;
+  }
+
+  /* Cool neon glow cards */
+  .neon-section {
+    background: #121212;
+    border-radius: 16px;
+    box-shadow: 0 0 40px #00ffa8aa;
+    border: 2px solid #00ffa8;
+    color: #a3f7d1;
+  }
+  .neon-section h2 {
+    color: #00ffa8;
+    text-shadow: 0 0 24px #00ffa8cc;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  /* Clients section */
+  #clients .clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+    gap: 2rem;
+    justify-items: center;
+  }
+  .client-card {
+    background: #171717;
+    padding: 2rem 1rem;
+    border-radius: 16px;
+    box-shadow: 0 0 12px #00ffa888;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #00ffa8;
+    user-select: none;
+    transition: transform 0.3s ease;
+  }
+  .client-card:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px #00ffd499;
+  }
+
+  /* Projects grid with hover zoom & video embed */
+  #projects .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap: 2.5rem;
+  }
+  .project-card {
+    background: #171717;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 0 30px #00ffa822;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    color: #00ffa8cc;
+  }
+  .project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 50px #00ffaaee;
+  }
+  .project-thumb {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid #00ffa8;
+    filter: brightness(0.85);
+    transition: filter 0.3s ease;
+  }
+  .project-card:hover .project-thumb {
+    filter: brightness(1);
+  }
+  .project-info {
+    padding: 1rem 1.2rem;
+  }
+  .project-info h3 {
+    font-weight: 900;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.06em;
+  }
+  .project-info p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #00ffbca8;
+    user-select: text;
+  }
+  .project-video-container {
+    margin-top: 0.8rem;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 20px #00ffa8bb;
+  }
+  iframe,
+  video {
+    width: 100%;
+    height: 180px;
+    border: none;
+    display: block;
+  }
+
+  /* Add project button floating style */
+  #add-project-btn {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    background: #00ffa8;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 2.2rem;
+    color: #121212;
+    cursor: pointer;
+    box-shadow: 0 0 18px #00ffa8cc;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    z-index: 1010;
+  }
+  #add-project-btn:hover {
+    background: #00f29b;
+    box-shadow: 0 0 30px #00ffaaee;
+  }
+  #add-project-btn:focus {
+    outline: 3px solid #00ffbca8;
+  }
+
+  /* Modal overlay */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 0.85);
+    z-index: 10000;
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  /* Modal content */
+  .modal-content {
+    background: #121212;
+    border-radius: 24px;
+    width: 90vw;
+    max-width: 480px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 0 40px #00ffa8cc;
+    position: relative;
+    color: #a3f7d1;
+    user-select: text;
+  }
+  .modal-content h4 {
+    margin-bottom: 1.2rem;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: #00ffa8;
+  }
+  .modal-close-btn {
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #00ffa8aa;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .modal-close-btn:hover {
+    color: #00ffaaee;
+  }
+
+  /* Modal form inputs */
+  form label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: bold;
+    color: #00ffbca8;
+    user-select: none;
+  }
+  form input[type=text],
+  form input[type=url],
+  form textarea {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 1.2rem;
+    border-radius: 14px;
+    border: 2px solid #00ffa8;
+    background: #1e1e1e;
+    color: #00ffbc;
+    font-size: 1rem;
+    resize: vertical;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+  }
+  form input[type=text]:focus,
+  form input[type=url]:focus,
+  form textarea:focus {
+    outline: none;
+    border-color: #00ffbca8;
+    box-shadow: 0 0 10px #00ffbca8aa;
+  }
+  form textarea {
+    height: 100px;
+  }
+  form button[type=submit] {
+    background: #00ffa8;
+    border: none;
+    color: #121212;
+    padding: 0.9rem 1.6rem;
+    font-weight: 900;
+    font-size: 1.2rem;
+    border-radius: 18px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  form button[type=submit]:hover {
+    background: #00ffcb;
+  }
+
+  /* About section */
+  #about p {
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #66ffaa;
+    user-select: text;
+    font-weight: 600;
+  }
+
+
+  /* Articles */
+  #articles .articles-list {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  #articles .articles-list article {
+    background: #171717;
+    margin-bottom: 1.4rem;
+    padding: 1.6rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 0 20px #00ffa811;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    color: #00ffa8;
+    user-select: text;
+  }
+  #articles .articles-list article:hover {
+    background: #00ffa833;
+  }
+  #articles .articles-list article h3 {
+    font-size: 1.3rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
+  #articles .articles-list article p {
+    color: #00ffbca8;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Contact form */
+  #contact form {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  #contact form label {
+    font-weight: 700;
+    user-select: none;
+    margin-bottom: 0.3rem;
+    color: #00ffbca8;
+  }
+  #contact form input,
+  #contact form textarea {
+    background: #1e1e1e;
+    border: 2px solid #00ffa8;
+    border-radius: 14px;
+    color: #00ffa8;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    font-family: inherit;
+  }
+  #contact form input:focus,
+  #contact form textarea:focus {
+    outline: none;
+    border-color: #00ffcb;
+    box-shadow: 0 0 12px #00ffcbaa;
+  }
+  #contact form button {
+    background: #00ffa8;
+    border: none;
+    color: #121212;
+    font-weight: 900;
+    font-size: 1.2rem;
+    border-radius: 18px;
+    padding: 0.8rem 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  #contact form button:hover {
+    background: #00ffcb;
+  }
+  #contact-feedback {
+    color: #00ffbca8;
+    margin-top: 0.2rem;
+    font-weight: 700;
+    min-height: 24px;
+    user-select: text;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width:720px) {
+    section {
+      padding: 3rem 5vw;
+    }
+    nav {
+      gap: 1rem;
+    }
+  }
+  @media (max-width:450px) {
+    nav {
+      gap: 0.7rem;
+      font-size: 0.95rem;
+    }
+    #home h2 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header role="banner">
+  <h1>بازسازی خفن</h1>
+  <nav role="navigation" aria-label="منوی اصلی">
+    <a href="#home" class="active" aria-current="page">خانه</a>
+    <a href="#clients">مشتریان</a>
+    <a href="#projects">پروژه‌ها</a>
+    <a href="#about">درباره ما</a>
+    <a href="#articles">مقالات</a>
+    <a href="#contact">تماس</a>
+  </nav>
+</header>
+
+<main>
+
+  <section id="home" role="region" aria-label="صفحه اصلی">
+    <h2>پیمانکاری بازسازی با قدرت و خلاقیت</h2>
+    <p>بهترین کیفیت، طراحی‌های نوآورانه و اجرای بی نظیر پروژه‌های بازسازی ساختمان در ایران.</p>
+  </section>
+
+  <section id="clients" class="neon-section" role="region" aria-label="مشتریان ما">
+    <h2>مشتریان ما</h2>
+    <div class="clients-grid" aria-live="polite" aria-relevant="additions removals">
+      <div class="client-card" tabindex="0" role="article" aria-label="مشتری شرکت آتیه سازان">آتیه سازان</div>
+      <div class="client-card" tabindex="0" role="article" aria-label="مشتری موسسه بهتر زندگی">بهتر زندگی</div>
+      <div class="client-card" tabindex="0" role="article" aria-label="مشتری مدرسه مهرگان">مهرگان</div>
+      <div class="client-card" tabindex="0" role="article" aria-label="مشتری مجتمع تجاری پارس">مجتمع تجاری پارس</div>
+    </div>
+  </section>
+
+  <section id="projects" class="neon-section" role="region" aria-label="پروژه‌ها">
+    <h2>پروژه‌ها</h2>
+    <div class="projects-grid" aria-live="polite" aria-relevant="additions removals">
+      <!-- پروژه ها اینجا اضافه میشوند -->
+    </div>
+  </section>
+
+  <button id="add-project-btn" aria-label="افزودن پروژه جدید" title="افزودن پروژه جدید">+</button>
+
+  <section id="about" class="neon-section" role="region" aria-label="درباره ما">
+    <h2>درباره ما</h2>
+    <p>
+      گروه پیمانکاری بازسازی با سال‌ها تجربه و اعتماد مشتریان.
+      همراه شما برای خلق فضاهای بی‌نظیر و نوآورانه.
+    </p>
+  </section>
+
+  <section id="articles" class="neon-section" role="region" aria-label="مقالات">
+    <h2>مقالات</h2>
+    <div class="articles-list" aria-live="polite" aria-relevant="additions removals">
+      <article tabindex="0" aria-label="مقاله اهمیت امنیت"><h3>اهمیت امنیت در بازسازی</h3><p>نکات کلیدی افزایش ایمنی در پروژه‌های بازسازی ساختمان.</p></article>
+      <article tabindex="0" aria-label="مقاله متریال بازسازی"><h3>انتخاب متریال مناسب</h3><p>راهنمای انتخاب متریال با کیفیت و استاندارد.</p></article>
+      <article tabindex="0" aria-label="مقاله مدیریت هزینه"><h3>مدیریت هزینه بازسازی</h3><p>چگونه هزینه‌ها را به بهترین شکل کنترل کنیم.</p></article>
+    </div>
+  </section>
+
+  <section id="contact" class="neon-section" role="region" aria-label="تماس با ما">
+    <h2>تماس با ما</h2>
+    <form id="contact-form" autocomplete="off" novalidate>
+      <label for="contact-name">نام کامل</label>
+      <input id="contact-name" name="contact-name" type="text" required aria-required="true" placeholder="نام شما" />
+      <label for="contact-email">ایمیل</label>
+      <input id="contact-email" name="contact-email" type="email" required aria-required="true" placeholder="example@example.com" />
+      <label for="contact-message">پیام شما</label>
+      <textarea id="contact-message" name="contact-message" required aria-required="true" placeholder="متن پیام" rows="5"></textarea>
+      <button type="submit">ارسال پیام</button>
+    </form>
+    <div id="contact-feedback" role="alert" aria-live="assertive" style="margin-top:1rem; font-weight:bold; color:#00ffbca8; min-height:24px;"></div>
+  </section>
+</main>
+
+<!-- Modal -->
+<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+  <div class="modal-content">
+    <button class="modal-close-btn" aria-label="بستن پنجره">×</button>
+    <h4 id="modal-title">افزودن پروژه جدید</h4>
+    <form id="add-project-form" autocomplete="off" novalidate>
+      <label for="proj-title">عنوان پروژه</label>
+      <input id="proj-title" name="proj-title" type="text" required aria-required="true" placeholder="عنوان پروژه" />
+      <label for="proj-desc">توضیحات</label>
+      <textarea id="proj-desc" name="proj-desc" required aria-required="true" placeholder="توضیح کوتاه درباره پروژه" rows="4"></textarea>
+      <label for="proj-img">آدرس عکس (jpg، png)</label>
+      <input id="proj-img" name="proj-img" type="url" placeholder="https://example.com/image.jpg" />
+      <label for="proj-video">آدرس ویدئو (اختیاری - mp4 یا یوتیوب)</label>
+      <input id="proj-video" name="proj-video" type="url" placeholder="https://example.com/video.mp4 یا https://youtu.be/..." />
+      <button type="submit">ثبت پروژه</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Navigation active state
+  const navLinks = document.querySelectorAll('header nav a');
+  const sections = [...document.querySelectorAll('main section[id]')];
+  const observerOptions = {
+    rootMargin: '-50% 0px -50% 0px',
+    threshold: 0
+  };
+  function setActiveLink(id) {
+    navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        setActiveLink(entry.target.id);
+      }
+    });
+  }, observerOptions);
+  sections.forEach(section => observer.observe(section));
+
+
+  // Modal open/close
+  const addProjectBtn = document.getElementById('add-project-btn');
+  const modal = document.getElementById('modal-overlay');
+  const modalCloseBtn = modal.querySelector('.modal-close-btn');
+  const addProjectForm = document.getElementById('add-project-form');
+  const projectsGrid = document.querySelector('#projects .projects-grid');
+
+  addProjectBtn.onclick = () => {
+    modal.classList.add('active');
+    addProjectForm.reset();
+    modal.focus();
+  };
+  modalCloseBtn.onclick = () => {
+    modal.classList.remove('active');
+  };
+  modal.onclick = (e) => {
+    if(e.target === modal) {
+      modal.classList.remove('active');
+    }
+  };
+  window.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+    }
+  });
+
+  // Load projects from localStorage
+  let projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+  // Helper to validate URL
+  function isValidUrl(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  // Detect YouTube URLs
+  function isYoutubeUrl(url) {
+    return /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+/.test(url);
+  }
+  // Extract YouTube video ID
+  function getYoutubeId(url) {
+    try {
+      const u = new URL(url);
+      if(u.hostname.includes('youtu.be')) {
+        return u.pathname.slice(1);
+      } else if(u.hostname.includes('youtube.com')) {
+        return u.searchParams.get('v');
+      }
+    } catch {
+      return null;
+    }
+    return null;
+  }
+  // Generate video embed
+  function embedVideo(url) {
+    if(isYoutubeUrl(url)) {
+      const id = getYoutubeId(url);
+      if(id) return `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
+    }
+    if(url.endsWith('.mp4')) {
+      return `<video controls preload="none" src="${url}"></video>`;
+    }
+    return '';
+  }
+
+  // Render projects
+  function renderProjects() {
+    projectsGrid.innerHTML = '';
+    if(projects.length === 0) {
+      projectsGrid.innerHTML = `<p style="color:#555; text-align:center; width:100%;">هیچ پروژه‌ای ثبت نشده است.</p>`;
+      return;
+    }
+    projects.forEach((p,i) => {
+      const div = document.createElement('div');
+      div.className = 'project-card';
+      div.setAttribute('tabindex', '0');
+      div.setAttribute('role', 'article');
+      div.setAttribute('aria-label', `پروژه ${p.title}`);
+      div.innerHTML = `
+        ${p.image ? `<img src="${p.image}" alt="عکس پروژه ${p.title}" loading="lazy" class="project-thumb"/>`
+        :`<div style="height:180px; background:#004d40;display:flex;align-items:center;justify-content:center;color:#00796b;font-weight:bold; border-bottom: 1px solid #00ffa8;">بدون تصویر</div>`}
+        <div class="project-info">
+          <h3>${p.title}</h3>
+          <p>${p.description}</p>
+          ${p.video ? `<div class="project-video-container">${embedVideo(p.video)}</div>` : ''}
+          <button aria-label="حذف پروژه ${p.title}" class="btn-delete" data-index="${i}" style="margin-top:10px;background:#ff1744;color:#fff;border:none;padding:6px 12px;border-radius:12px;cursor:pointer;user-select:none; font-weight:900;">
+          حذف</button>
+        </div>
+      `;
+      projectsGrid.appendChild(div);
+    });
+  }
+
+  // Save projects
+  function saveProjects() {
+    localStorage.setItem('projects', JSON.stringify(projects));
+  }
+
+  // Add project form submission
+  addProjectForm.onsubmit = e => {
+    e.preventDefault();
+    const title = addProjectForm['proj-title'].value.trim();
+    const desc = addProjectForm['proj-desc'].value.trim();
+    const img = addProjectForm['proj-img'].value.trim();
+    const video = addProjectForm['proj-video'].value.trim();
+
+    if(!title || !desc) {
+      alert('عنوان و توضیح پروژه ضروری است!');
+      return;
+    }
+    if(img && !isValidUrl(img)) {
+      alert('آدرس عکس نامعتبر است!');
+      return;
+    }
+    if(video && !isValidUrl(video)) {
+      alert('آدرس ویدئو نامعتبر است!');
+      return;
+    }
+
+    projects.push({title, description: desc, image: img, video});
+    saveProjects();
+    renderProjects();
+    modal.classList.remove('active');
+  };
+
+  // Delete project handler
+  projectsGrid.onclick = e => {
+    if(e.target.classList.contains('btn-delete')) {
+      const idx = +e.target.dataset.index;
+      if(confirm(`آیا از حذف پروژه "${projects[idx].title}" اطمینان دارید؟`)) {
+        projects.splice(idx,1);
+        saveProjects();
+        renderProjects();
+      }
+    }
+  };
+
+  // Contact form submit
+  const contactForm = document.getElementById('contact-form');
+  const contactFeedback = document.getElementById('contact-feedback');
+  contactForm.onsubmit = e => {
+    e.preventDefault();
+    contactFeedback.textContent = 'پیام شما با موفقیت ارسال شد! متشکریم.';
+    contactForm.reset();
+    setTimeout(() => {
+      contactFeedback.textContent = '';
+    }, 6000);
+  };
+
+  // Initial render
+  renderProjects();
+
+</script>
+
+</body>
+</html>
+
