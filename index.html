@@ -510,11 +510,12 @@
 </main>
 
 <!-- Modal -->
-<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1" aria-hidden="true" aria-describedby="modal-desc">
   <div class="modal-content">
     <button class="modal-close-btn" aria-label="بستن پنجره">×</button>
     <h4 id="modal-title">افزودن پروژه جدید</h4>
-    <form id="add-project-form" autocomplete="off" novalidate>
+    <form id="add-project-form" autocomplete="off" novalidate aria-describedby="modal-desc">
+      <p id="modal-desc" style="color:#00ffbca8; font-size:0.9rem; margin-bottom:1rem;">لطفا مشخصات پروژه جدید را وارد کنید</p>
       <label for="proj-title">عنوان پروژه</label>
       <input id="proj-title" name="proj-title" type="text" required aria-required="true" placeholder="عنوان پروژه" />
       <label for="proj-desc">توضیحات</label>
@@ -529,6 +530,9 @@
 </div>
 
 <script>
+  // رمز عبور ساده برای اجازه نمایش فرم
+  const PASSWORD = "1234";
+
   // Navigation active state
   const navLinks = document.querySelectorAll('header nav a');
   const sections = [...document.querySelectorAll('main section[id]')];
@@ -548,7 +552,6 @@
   }, observerOptions);
   sections.forEach(section => observer.observe(section));
 
-
   // Modal open/close
   const addProjectBtn = document.getElementById('add-project-btn');
   const modal = document.getElementById('modal-overlay');
@@ -556,22 +559,51 @@
   const addProjectForm = document.getElementById('add-project-form');
   const projectsGrid = document.querySelector('#projects .projects-grid');
 
+  // ذخیره وضعیت ورود رمز در sessionStorage
+  function isPasswordEntered() {
+    return sessionStorage.getItem('projectPasswordAuthorized') === 'true';
+  }
+  function setPasswordEntered(flag) {
+    if(flag) {
+      sessionStorage.setItem('projectPasswordAuthorized', 'true');
+    } else {
+      sessionStorage.removeItem('projectPasswordAuthorized');
+    }
+  }
+
+  // هنگام کلیک روی دکمه افزودن پروژه، رمز را می‌پرسیم
   addProjectBtn.onclick = () => {
+    if(isPasswordEntered()) {
+      openModal();
+    } else {
+      const pass = prompt("لطفا رمز عبور را وارد کنید:");
+      if(pass === PASSWORD) {
+        setPasswordEntered(true);
+        openModal();
+      } else {
+        alert("رمز عبور اشتباه است. دسترسی محدود شد.");
+      }
+    }
+  };
+  function openModal() {
     modal.classList.add('active');
     addProjectForm.reset();
+    modal.setAttribute('aria-hidden', 'false');
     modal.focus();
-  };
-  modalCloseBtn.onclick = () => {
+  }
+  function closeModal() {
     modal.classList.remove('active');
-  };
+    modal.setAttribute('aria-hidden', 'true');
+  }
+  modalCloseBtn.onclick = () => closeModal();
   modal.onclick = (e) => {
     if(e.target === modal) {
-      modal.classList.remove('active');
+      closeModal();
     }
   };
   window.addEventListener('keydown', e => {
     if(e.key === 'Escape' && modal.classList.contains('active')) {
-      modal.classList.remove('active');
+      closeModal();
     }
   });
 
@@ -637,8 +669,8 @@
           <h3>${p.title}</h3>
           <p>${p.description}</p>
           ${p.video ? `<div class="project-video-container">${embedVideo(p.video)}</div>` : ''}
-          <button aria-label="حذف پروژه ${p.title}" class="btn-delete" data-index="${i}" style="margin-top:10px;background:#ff1744;color:#fff;border:none;padding:6px 12px;border-radius:12px;cursor:pointer;user-select:none; font-weight:900;">
-          حذف</button>
+          ${isPasswordEntered() ? `<button aria-label="حذف پروژه ${p.title}" class="btn-delete" data-index="${i}" style="margin-top:10px;background:#ff1744;color:#fff;border:none;padding:6px 12px;border-radius:12px;cursor:pointer;user-select:none; font-weight:900;">
+          حذف</button>` : ''}
         </div>
       `;
       projectsGrid.appendChild(div);
@@ -674,7 +706,7 @@
     projects.push({title, description: desc, image: img, video});
     saveProjects();
     renderProjects();
-    modal.classList.remove('active');
+    closeModal();
   };
 
   // Delete project handler
